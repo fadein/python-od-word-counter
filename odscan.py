@@ -46,17 +46,18 @@ class WordCountTree:
         colm.set_sort_column_id(self.cCount)
         treeView.append_column(colm)
 
-
 class IgnoreWordsTree:
     """instantiates the treeview containing the list of words to exclude from analysis"""
+    cWord, sWord = 0,'Ignored Word'
     def __init__(self, treeView):
         self.treeView = treeView
-        self.cWord, self.sWord = 0,'Ignored Word'
 
         #Fill in the tvAnalysis with columns
-        colm = gtk.TreeViewColumn(self.sWord, gtk.CellRendererText(), text=self.cWord)
+        colm = gtk.TreeViewColumn(IgnoreWordsTree.sWord,
+                gtk.CellRendererText(),
+                text=IgnoreWordsTree.cWord)
         colm.set_resizable(True)
-        colm.set_sort_column_id(self.cWord)
+        colm.set_sort_column_id(IgnoreWordsTree.cWord)
         treeView.append_column(colm)
         treeView.set_expander_column(colm)
 
@@ -70,6 +71,8 @@ class ODScanGUI:
         d = {   "on_open1_activate" : self.OnOpen,
                 "on_btRefresh_clicked" : self.OnRefresh,
                 "on_quit1_activate" : gtk.main_quit,
+                "on_btIgnoreAdd_clicked" : self.OnIgnoreAdd,
+                "on_btIgnoreRemove_clicked" : self.OnIgnoreRemove,
             }
         self.wTree.signal_autoconnect(d)
 
@@ -104,6 +107,18 @@ class ODScanGUI:
         if self.filename != None:
             logging.info("gonna open file " + self.filename)
             self.OpenFile()
+
+    def OnIgnoreRemove(self, widget):
+        """Remove word from ignore list and corresponding textfile"""
+        logging.warn(" OnIgnoreRemove")
+        (modl, iter) = self.tvIgnore.get_selection().get_selected()       
+        if None != iter:
+            self.tsIgnore.remove(iter)
+            #TODO: remove from textfile & rewrite it
+    
+    def OnIgnoreAdd(self, widget):
+        """Add word to ignore list and corresponding textfile"""
+        logging.warn(" OnIgnoreAdd")
 
     def OnOpen(self, widget):
         """Displays file selection dialog - allows user to choose a document"""
