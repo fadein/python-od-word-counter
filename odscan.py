@@ -17,7 +17,7 @@ import gtk.glade;
 #2.  Don't split words on whitespace; find a better way to do it that won't
 #       choke on apostraphes
 #3.  Add Inotify support, if available
-#4.  Refactor OdtAnalyzer classto make it easier for it to do all of its tests
+#4.  Refactor OdtAnalyzer class to make it easier for it to do all of its tests
 #       in one location; I don't want to make many passes over the text right now.
 #       I don't mind making many passes over each para, though.
 
@@ -98,9 +98,9 @@ class ODScanGUI:
         #populate it
         for item in self.ignoreWords.words:
             try:
-                #why???
-                self.tsIgnore.append([item, 1])
-            except ValueError: pass
+                self.tsIgnore.append([item, IgnoreWordsTree.cWord])
+            except ValueError:
+                pass
 
         #if filename was passed on cmdline, open it
         logging.info(self.filename)
@@ -113,12 +113,25 @@ class ODScanGUI:
         logging.warn(" OnIgnoreRemove")
         (modl, iter) = self.tvIgnore.get_selection().get_selected()       
         if None != iter:
+            self.ignoreWords.removeWord(modl.get_value(iter, IgnoreWordsTree.cWord))
             self.tsIgnore.remove(iter)
-            #TODO: remove from textfile & rewrite it
+            self.Rescan()
     
     def OnIgnoreAdd(self, widget):
         """Add word to ignore list and corresponding textfile"""
         logging.warn(" OnIgnoreAdd")
+        wTree = gtk.glade.XML(gladefile, "dlgNewWord")
+        dlg = wTree.get_widget("dlgNewWord")
+        result = dlg.run()
+        if (result == gtk.RESPONSE_OK):
+            entry = wTree.get_widget("entAddWord")
+            newWord = entry.get_text().strip().lower()
+            if newWord != '':
+                self.ignoreWords.addWord(newWord)
+                self.tsIgnore.append([newWord, 1])
+                self.Rescan()
+
+        dlg.destroy()
 
     def OnOpen(self, widget):
         """Displays file selection dialog - allows user to choose a document"""
@@ -135,6 +148,10 @@ class ODScanGUI:
 
     def OnRefresh(self, widget):
         """called when refresh button is clicked"""
+        self.Rescan()
+
+    def Rescan(self):
+        """Clear out the word freq. treeview & reload it"""
         self.tsAnalysis.clear()
         self.Scan()
 
@@ -300,6 +317,19 @@ class IgnoreWords:
                 b.write(word)
         except IOError, (errno, strerror):
             pass
+
+    def removeWord(self, word):
+        try:
+            self.words.remove(word.strip().lower()) 
+        except ValueError:
+            print "Failed to remove %s from Ignored words list" % word
+        else:
+            self.writeFile()
+
+    def addWord(self, word):
+        if not self.words.__contains__(word):
+            self.words.append(word)
+            self.writeFile()
 
 
 if __name__ == '__main__':
