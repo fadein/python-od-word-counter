@@ -6,6 +6,7 @@ import os
 import sys
 import xml.dom.minidom
 import zipfile
+from pyinotify import WatchManager, ThreadedNotifier, EventsCodes, ProcessEvent
 
 import pygtk
 pygtk.require('2.0')
@@ -16,10 +17,12 @@ import gtk.glade;
 #1.  Put treeviews into their own class to clean up __init__()
 #2.  Don't split words on whitespace; find a better way to do it that won't
 #       choke on apostraphes
-#3.  Add Inotify support, if available
 #4.  Refactor OdtAnalyzer class to make it easier for it to do all of its tests
 #       in one location; I don't want to make many passes over the text right now.
 #       I don't mind making many passes over each para, though.
+#5.  Fix Inotify support; the threaded listner doesn't work.  Made a test file
+#    called pythino.py; use that to figure this out.  pyinotest.py works pretty
+#    well...
 
 
 gladefile = 'odscan.glade'
@@ -64,13 +67,14 @@ class IgnoreWordsTree:
 class ODScanGUI:
     def __init__(self, file):
         self.filename = file #name of file to analyze
+        self.notifier = None #pyinotify
 
         self.wTree = gtk.glade.XML(gladefile, "toplevel")
         self.toplevel = self.wTree.get_widget('toplevel')
-        self.toplevel.connect('delete_event', gtk.main_quit)
+        self.toplevel.connect('delete_event', self.OnDeleteEvent)
         d = {   "on_open1_activate" : self.OnOpen,
                 "on_btRefresh_clicked" : self.OnRefresh,
-                "on_quit1_activate" : gtk.main_quit,
+                "on_quit1_activate" : self.OnQuit,
                 "on_btIgnoreAdd_clicked" : self.OnIgnoreAdd,
                 "on_btIgnoreRemove_clicked" : self.OnIgnoreRemove,
             }
@@ -106,7 +110,30 @@ class ODScanGUI:
         logging.info(self.filename)
         if self.filename != None:
             logging.info("gonna open file " + self.filename)
+            self.InitInotify()
             self.OpenFile()
+
+    def OnDeleteEvent(self, widget, event):
+        """TODO: fix this!"""
+        if self.notifier != None:
+            print "need to stop a notifier"
+            self.notifier.stop()
+        return True
+
+    def OnQuit(self, widget):
+        if self.notifier != None:
+            print "need to stop a notifier"
+            self.notifier.stop()
+        gtk.main_quit()
+
+    def InitInotify(self):
+        """initialize the inotify interface"""
+        logging.info('initializing an inotify listner')
+        wm = WatchManager()
+        iep = InoEventProc(self)
+        self.notifier = ThreadedNotifier(wm, iep)
+        self.notifier.start()
+        wm.add_watch(self.filename, EventsCodes.ALL_EVENTS)
 
     def OnIgnoreRemove(self, widget):
         """Remove word from ignore list and corresponding textfile"""
@@ -331,6 +358,13 @@ class IgnoreWords:
             self.words.append(word)
             self.writeFile()
 
+class InoEventProc(ProcessEvent):
+    def __init__(self, tree):
+        self.tree = tree
+
+	def process_IN_CLOSE_WRITE(self, event):
+		print "file %s did a %s" % (event.event_name, event.path)
+        self.tree.Rescan()
 
 if __name__ == '__main__':
     """
