@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from pyinotify import WatchManager, Notifier, EventsCodes, ProcessEvent
+from pyinotify import WatchManager, ThreadedNotifier, EventsCodes, ProcessEvent
 import sys
 
 added_flag = False
@@ -29,7 +29,7 @@ class ErikPE(ProcessEvent):
 		print event.path
 
 	def process_IN_MODIFY(self, event):
-		print "fiel was modified"
+		print "file was modified"
 		print event.event_name
 		print event.name
 		print event.path
@@ -63,24 +63,22 @@ mask =  EventsCodes.IN_CLOSE_WRITE
 
 #mask = EventsCodes.ALL_EVENTS
 
+wm = WatchManager()
+notifier = ThreadedNotifier(wm, ErikPE())
+notifier.start()
+wm.add_watch(path, mask)
+
+# keep artificially the main thread alive forever
 while True:
 	try:
-		if not added_flag:
-			print "re-adding watch"
-			wm = WatchManager()
-			notifier = Notifier(wm, ErikPE())
-			wm.add_watch(path, mask)
-			added_flag = True
-		print "gonna process_events()"
-		notifier.process_events()
-		print "gonna check_events()"
-		if notifier.check_events():
-			print "gonna read_events()"
-			notifier.read_events()
+		import time
+		time.sleep(5)
 	except KeyboardInterrupt:
-		print "ok, fine, I'm done!"
+		# ...until c^c signal
+		print 'stop monitoring...'
+		# stop monitoring
 		notifier.stop()
 		break
 	except Exception, err:
+		# otherwise keep on looping
 		print err
-
