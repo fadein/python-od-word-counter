@@ -122,7 +122,7 @@ class ODScanGUI:
         Doesn't actuallly quit, it just kinda waits around for a little bit..."""
         logging.debug("OnDeleteEvent()")
         self.UnInotify("OnDeleteEvent()")
-        return True
+        return False
 
     def OnQuit(self, widget):
         """Called when Quit menu item is clicked"""
@@ -136,7 +136,6 @@ class ODScanGUI:
             print "%s needs to stop a notifier on %s" % (caller, self.filename)
             self.notifier.stop()
             self.notifier = None
-
 
     def InitInotify(self):
         """initialize the inotify interface"""
@@ -406,7 +405,6 @@ class InoEventProc(ProcessEvent):
         print event.path
 
     def process_IN_IGNORED(self, event):
-        global added_flag
         print "file was ignored"
         print event.event_name
         print event.name
