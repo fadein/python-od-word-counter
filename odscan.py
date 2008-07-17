@@ -27,6 +27,7 @@ gtk.gdk.threads_init();
 #5. X Fix Inotify support; the threaded listner doesn't work.  Made a test file
 #     called pythino.py; use that to figure this out.  pyinotest.py works pretty
 #     well...
+#6.   Find out why the delete_event doesn't work the same way as the quit menu item
 
 
 gladefile = 'odscan.glade'
@@ -122,6 +123,8 @@ class ODScanGUI:
         Doesn't actuallly quit, it just kinda waits around for a little bit..."""
         logging.debug("OnDeleteEvent()")
         self.UnInotify("OnDeleteEvent()")
+        #this is a hack; find out why it's really not quitting.
+        #gtk.main_quit()
         return False
 
     def OnQuit(self, widget):
@@ -135,7 +138,9 @@ class ODScanGUI:
         if self.notifier != None:
             print "%s needs to stop a notifier on %s" % (caller, self.filename)
             self.notifier.stop()
+            print "...Done stopping notifier"
             self.notifier = None
+            return False
 
     def InitInotify(self):
         """initialize the inotify interface"""
@@ -145,8 +150,8 @@ class ODScanGUI:
         self.notifier = ThreadedNotifier(wm, InoEventProc(self))
         self.notifier.start()
         #mask of events to listen on
-        mask = EventsCodes.IN_CLOSE_WRITE
         #mask = EventsCodes.ALL_EVENTS
+        mask = EventsCodes.IN_CLOSE_WRITE
         if (wm.add_watch(self.filename, mask))[self.filename] < 0:
 
             #add_watch() failed
@@ -190,7 +195,8 @@ class ODScanGUI:
         result, filename = openDlg.run()
         if (result == gtk.RESPONSE_OK):
             self.filename = filename
-            self.OpenFile()
+            #self.OpenFile()
+            gobject.idle_add(self.OpenFile)
 
     def OpenFile(self):
         """Performs the work of loading the ODF document"""
