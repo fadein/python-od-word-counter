@@ -18,15 +18,15 @@ import gtk.glade;
 gtk.gdk.threads_init();
 
 #TODO list:
-#1.  Put treeviews into their own class to clean up __init__()
-#2.  Don't split words on whitespace; find a better way to do it that won't
-#       choke on apostraphes
-#4.  Refactor OdtAnalyzer class to make it easier for it to do all of its tests
-#       in one location; I don't want to make many passes over the text right now.
-#       I don't mind making many passes over each para, though.
-#5.  Fix Inotify support; the threaded listner doesn't work.  Made a test file
-#    called pythino.py; use that to figure this out.  pyinotest.py works pretty
-#    well...
+#1. X Put treeviews into their own class to clean up __init__()
+#2.   Don't split words on whitespace; find a better way to do it that won't
+#        choke on apostraphes
+#4.   Refactor OdtAnalyzer class to make it easier for it to do all of its tests
+#        in one location; I don't want to make many passes over the text right now.
+#        I don't mind making many passes over each para, though.
+#5. X Fix Inotify support; the threaded listner doesn't work.  Made a test file
+#     called pythino.py; use that to figure this out.  pyinotest.py works pretty
+#     well...
 
 
 gladefile = 'odscan.glade'
@@ -125,7 +125,7 @@ class ODScanGUI:
         return True
 
     def OnQuit(self, widget):
-        """TODO: fix this!"""
+        """Called when Quit menu item is clicked"""
         logging.debug("OnQuit()")
         self.UnInotify("OnQuit()")
         gtk.main_quit()
@@ -135,6 +135,8 @@ class ODScanGUI:
         if self.notifier != None:
             print "%s needs to stop a notifier on %s" % (caller, self.filename)
             self.notifier.stop()
+            self.notifier = None
+
 
     def InitInotify(self):
         """initialize the inotify interface"""
@@ -146,7 +148,17 @@ class ODScanGUI:
         #mask of events to listen on
         mask = EventsCodes.IN_CLOSE_WRITE
         #mask = EventsCodes.ALL_EVENTS
-        wm.add_watch(self.filename, mask)
+        if (wm.add_watch(self.filename, mask))[self.filename] < 0:
+
+            #add_watch() failed
+            self.UnInotify("InitInotify() failure!!")
+            logging.debug("Failure to watch file %s via Inotify; you're on your own" % self.filename)
+            errmsgDlg = gtk.MessageDialog(parent=self.toplevel,
+                    type=gtk.MESSAGE_WARNING,
+                    buttons=gtk.BUTTONS_OK,
+                    message_format="Changes to file %s cannot be automatically monitored. Remember to click 'Refresh' after saving your changes." % self.filename)
+            errmsgDlg.run()
+            errmsgDlg.destroy()
 
     def OnIgnoreRemove(self, widget):
         """Remove word from ignore list and corresponding textfile"""
