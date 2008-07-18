@@ -30,7 +30,8 @@ gtk.gdk.threads_init();
 #6.   Find out why the delete_event doesn't work the same way as the quit menu item
 
 
-gladefile = 'odscan.glade'
+print sys.argv[0]
+gladefile = '%s%sodscan.glade' % (os.path.dirname(sys.argv[0]), os.path.sep)
 logging.basicConfig(level=logging.DEBUG,
         datefmt='%H:%M:%S',
         format='%(asctime)s %(levelname)s %(message)s',)
@@ -359,7 +360,8 @@ class IgnoreWords:
 
     def __init__(self):
         self.words = []
-        self.ignoreFile = './IgnoreWords.txt'
+
+        self.ignoreFile = '%s%sIgnoreWords.txt' % (os.path.dirname(sys.argv[0]), os.path.sep)
 
         try:
             b = open(self.ignoreFile, 'r')
