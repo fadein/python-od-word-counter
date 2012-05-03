@@ -5,3 +5,9 @@ test.odt
 *.swp
 *.swo
 tags
+*.odt
+*.zip
+*.bak
+Princess/
+cat/
+test/
