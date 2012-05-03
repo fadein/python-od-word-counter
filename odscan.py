@@ -7,7 +7,7 @@ import os.path
 import sys
 import xml.dom.minidom
 import zipfile
-from pyinotify import WatchManager, ThreadedNotifier, EventsCodes, ProcessEvent
+from pyinotify import WatchManager, ThreadedNotifier, EventsCodes, ProcessEvent, IN_CLOSE_WRITE
 
 import pygtk
 pygtk.require('2.0')
@@ -125,7 +125,7 @@ class ODScanGUI:
         logging.debug("OnDeleteEvent()")
         self.UnInotify("OnDeleteEvent()")
         #this is a hack; find out why it's really not quitting.
-        #gtk.main_quit()
+        gtk.main_quit()
         return False
 
     def OnQuit(self, widget):
@@ -151,8 +151,7 @@ class ODScanGUI:
         self.notifier = ThreadedNotifier(wm, InoEventProc(self))
         self.notifier.start()
         #mask of events to listen on
-        #mask = EventsCodes.ALL_EVENTS
-        mask = EventsCodes.IN_CLOSE_WRITE
+        mask = IN_CLOSE_WRITE
         if (wm.add_watch(self.filename, mask))[self.filename] < 0:
 
             #add_watch() failed

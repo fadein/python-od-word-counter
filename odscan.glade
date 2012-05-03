@@ -1,57 +1,184 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0" encoding="UTF-8"?>
 <glade-interface>
-  <widget class="GtkFileChooserDialog" id="filechooserdialog">
+  <!-- interface-requires gtk+ 2.22 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <widget class="GtkDialog" id="dlgNewWord">
+    <property name="can_focus">False</property>
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <property name="border_width">5</property>
-    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <signal name="close" handler="on_filechooserdialog_close"/>
+    <property name="title" translatable="yes">Add word to ignore list</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <widget class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
         <property name="spacing">2</property>
-        <child>
-          <widget class="GtkComboBox" id="combobox1">
-            <property name="visible">True</property>
-            <property name="items" translatable="yes">Vim Color Schemes
-All Files</property>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <widget class="GtkHButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="can_focus">False</property>
+            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="filechooserCxl">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
+              <widget class="GtkButton" id="button2">
                 <property name="label">gtk-cancel</property>
-                <property name="use_stock">True</property>
-                <property name="response_id">-6</property>
-              </widget>
-            </child>
-            <child>
-              <widget class="GtkButton" id="filechooserOK">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="label">gtk-ok</property>
+                <property name="receives_default">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-5</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="button1">
+                <property name="label">gtk-ok</property>
+                <property name="response_id">-5</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkVBox" id="vbox4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <child>
+              <widget class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="label" translatable="yes">Enter new word</property>
+              </widget>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkEntry" id="entAddWord">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="activates_default">True</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+              </widget>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkFileChooserDialog" id="filechooserdialog">
+    <property name="can_focus">False</property>
+    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+    <property name="border_width">5</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <signal name="close" handler="on_filechooserdialog_close"/>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <widget class="GtkButton" id="filechooserCxl">
+                <property name="label">gtk-cancel</property>
+                <property name="response_id">-6</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="filechooserOK">
+                <property name="label">gtk-ok</property>
+                <property name="response_id">-5</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkComboBox" id="combobox1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="items" translatable="yes">Open Document Texts (*.odt)
+All Files (*.*)</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </widget>
@@ -61,24 +188,32 @@ All Files</property>
     <property name="width_request">600</property>
     <property name="height_request">600</property>
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Open Document Analyzer</property>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <widget class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <widget class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menu1">
+                    <property name="can_focus">False</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="new1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-new</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_new1_activate"/>
@@ -86,8 +221,10 @@ All Files</property>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="open1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-open</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_open1_activate"/>
@@ -95,8 +232,10 @@ All Files</property>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="save1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-save</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_save1_activate"/>
@@ -104,8 +243,10 @@ All Files</property>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="save_as1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-save-as</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_save_as1_activate"/>
@@ -114,12 +255,15 @@ All Files</property>
                     <child>
                       <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="quit1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-quit</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_quit1_activate"/>
@@ -132,14 +276,19 @@ All Files</property>
             <child>
               <widget class="GtkMenuItem" id="menuitem2">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menu2">
+                    <property name="can_focus">False</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="cut1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-cut</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_cut1_activate"/>
@@ -147,8 +296,10 @@ All Files</property>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="copy1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-copy</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_copy1_activate"/>
@@ -156,8 +307,10 @@ All Files</property>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="paste1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-paste</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_paste1_activate"/>
@@ -165,8 +318,10 @@ All Files</property>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="delete1">
-                        <property name="visible">True</property>
                         <property name="label">gtk-delete</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_delete1_activate"/>
@@ -179,10 +334,13 @@ All Files</property>
             <child>
               <widget class="GtkMenuItem" id="menuitem3">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menu3">
+                    <property name="can_focus">False</property>
                   </widget>
                 </child>
               </widget>
@@ -190,13 +348,18 @@ All Files</property>
             <child>
               <widget class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menu4">
+                    <property name="can_focus">False</property>
                     <child>
                       <widget class="GtkMenuItem" id="about1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">_About</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_about1_activate"/>
@@ -210,6 +373,7 @@ All Files</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -219,6 +383,7 @@ All Files</property>
             <child>
               <widget class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <widget class="GtkHPaned" id="hpaned1">
                     <property name="visible">True</property>
@@ -228,7 +393,7 @@ All Files</property>
                         <property name="width_request">200</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="shadow_type">GTK_SHADOW_IN</property>
+                        <property name="shadow_type">in</property>
                         <child>
                           <widget class="GtkTreeView" id="tvAnalysis">
                             <property name="visible">True</property>
@@ -244,27 +409,18 @@ All Files</property>
                     <child>
                       <widget class="GtkAlignment" id="alignment1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <widget class="GtkTable" id="table1">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="n_rows">5</property>
                             <property name="n_columns">2</property>
                             <property name="homogeneous">True</property>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
                               <widget class="GtkLabel" id="lblSentanceCount">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                               </widget>
                               <packing>
@@ -279,6 +435,7 @@ All Files</property>
                             <child>
                               <widget class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Sentances:</property>
                               </widget>
@@ -292,6 +449,7 @@ All Files</property>
                             <child>
                               <widget class="GtkLabel" id="lblWordCount">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                               </widget>
                               <packing>
@@ -304,6 +462,7 @@ All Files</property>
                             <child>
                               <widget class="GtkLabel" id="label3">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Words:</property>
                               </widget>
@@ -315,6 +474,7 @@ All Files</property>
                             <child>
                               <widget class="GtkLabel" id="lblParagraphCount">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                               </widget>
                               <packing>
@@ -329,6 +489,7 @@ All Files</property>
                             <child>
                               <widget class="GtkLabel" id="label2">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Paragraphs:</property>
                               </widget>
@@ -339,6 +500,18 @@ All Files</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
                           </widget>
                         </child>
                       </widget>
@@ -348,23 +521,31 @@ All Files</property>
                       </packing>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <widget class="GtkHBox" id="hbox1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <placeholder/>
                     </child>
                     <child>
                       <widget class="GtkButton" id="btRefresh">
+                        <property name="label">gtk-refresh</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="label">gtk-refresh</property>
+                        <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">0</property>
                         <signal name="clicked" handler="on_btRefresh_clicked"/>
                       </widget>
                       <packing>
+                        <property name="expand">True</property>
                         <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
@@ -384,11 +565,12 @@ All Files</property>
             <child>
               <widget class="GtkLabel" id="label1">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Analysis</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -398,13 +580,14 @@ All Files</property>
                 <child>
                   <widget class="GtkVBox" id="vbox3">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <widget class="GtkScrolledWindow" id="scrolledwindow3">
                         <property name="width_request">400</property>
                         <property name="height_request">650</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="shadow_type">GTK_SHADOW_IN</property>
+                        <property name="shadow_type">in</property>
                         <child>
                           <widget class="GtkTreeView" id="tvIgnore">
                             <property name="visible">True</property>
@@ -412,33 +595,44 @@ All Files</property>
                           </widget>
                         </child>
                       </widget>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                     <child>
                       <widget class="GtkHBox" id="hbox2">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <widget class="GtkButton" id="btIgnoreAdd">
+                            <property name="label">gtk-add</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label">gtk-add</property>
+                            <property name="receives_default">False</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                             <signal name="clicked" handler="on_btIgnoreAdd_clicked"/>
                           </widget>
                           <packing>
+                            <property name="expand">True</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <widget class="GtkButton" id="btIgnoreRemove">
+                            <property name="label">gtk-remove</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="label">gtk-remove</property>
+                            <property name="receives_default">False</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                             <signal name="clicked" handler="on_btIgnoreRemove_clicked"/>
                           </widget>
                           <packing>
+                            <property name="expand">True</property>
                             <property name="fill">False</property>
                             <property name="position">1</property>
                           </packing>
@@ -459,6 +653,7 @@ All Files</property>
                 <child>
                   <widget class="GtkLabel" id="label13">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="label" translatable="yes">List of words to exclude from
@@ -466,7 +661,7 @@ frequency analysis</property>
                     <property name="use_markup">True</property>
                     <property name="use_underline">True</property>
                     <property name="wrap">True</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <property name="wrap_mode">word-char</property>
                   </widget>
                   <packing>
                     <property name="resize">True</property>
@@ -481,109 +676,31 @@ frequency analysis</property>
             <child>
               <widget class="GtkLabel" id="label12">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Ignored Words</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
           </widget>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
           <widget class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </widget>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">2</property>
-          </packing>
-        </child>
-      </widget>
-    </child>
-  </widget>
-  <widget class="GtkDialog" id="dlgNewWord">
-    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-    <property name="border_width">5</property>
-    <property name="title" translatable="yes">Add word to ignore list</property>
-    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <property name="has_separator">False</property>
-    <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox2">
-        <property name="visible">True</property>
-        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-        <property name="spacing">2</property>
-        <child>
-          <widget class="GtkVBox" id="vbox4">
-            <property name="visible">True</property>
-            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <child>
-              <widget class="GtkLabel" id="label4">
-                <property name="visible">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="label" translatable="yes">Enter new word</property>
-              </widget>
-            </child>
-            <child>
-              <widget class="GtkEntry" id="entAddWord">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="has_focus">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="activates_default">True</property>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area2">
-            <property name="visible">True</property>
-            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
-            <child>
-              <widget class="GtkButton" id="button2">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="label" translatable="yes">gtk-cancel</property>
-                <property name="use_stock">True</property>
-                <property name="response_id">0</property>
-              </widget>
-            </child>
-            <child>
-              <widget class="GtkButton" id="button1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="has_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="label" translatable="yes">gtk-ok</property>
-                <property name="use_stock">True</property>
-                <property name="response_id">-5</property>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
           </packing>
         </child>
       </widget>
