@@ -89,7 +89,7 @@ class ODScanGUI:
         #instantiate a WordCountTree, but return the gtk.TreeView it contains
         self.tvAnalysis = WordCountTree(self.wTree.get_widget("tvAnalysis")).treeView
         #create a treestore model to use with tvAnalysis
-        self.tsAnalysis = gtk.ListStore(str, str)
+        self.tsAnalysis = gtk.TreeStore(str, str)
         #attach model to tvAnalysis
         self.tvAnalysis.set_model(self.tsAnalysis)
         #set selection mode
@@ -236,7 +236,8 @@ class ODScanGUI:
 
     def PopulateTree(self, odfreader):
         for item in odfreader.totalList:
-            self.tsAnalysis.append(item)
+            self.tsAnalysis.append(None, item)
+            pass
 
 class OdtAnalyzer:
     def __init__(self, filename, ignoreWords=None):
