@@ -40,20 +40,20 @@ class WordCountTree:
     """instantiates the treeview containing the wordcount"""
     def __init__(self, treeView):
         self.treeView = treeView
-        self.cWord, self.sWord = 0,'Word'
-        self.cCount, self.sCount = 1, 'Count'
+        self.cCount, self.sCount = 0, 'Count'
+        self.cWord, self.sWord   = 1, 'Word'
 
         #Fill in the tvAnalysis with columns
+        colm = gtk.TreeViewColumn(self.sCount, gtk.CellRendererText(), text=self.cCount)
+        colm.set_resizable(True)
+        colm.set_sort_column_id(self.cCount)
+        treeView.append_column(colm)
+
         colm = gtk.TreeViewColumn(self.sWord, gtk.CellRendererText(), text=self.cWord)
         colm.set_resizable(True)
         colm.set_sort_column_id(self.cWord)
         treeView.append_column(colm)
         treeView.set_expander_column(colm)
-
-        colm = gtk.TreeViewColumn(self.sCount, gtk.CellRendererText(), text=self.cCount)
-        colm.set_resizable(True)
-        colm.set_sort_column_id(self.cCount)
-        treeView.append_column(colm)
 
 class IgnoreWordsTree:
     """instantiates the treeview containing the list of words to exclude from analysis"""
@@ -89,7 +89,7 @@ class ODScanGUI:
         #instantiate a WordCountTree, but return the gtk.TreeView it contains
         self.tvAnalysis = WordCountTree(self.wTree.get_widget("tvAnalysis")).treeView
         #create a treestore model to use with tvAnalysis
-        self.tsAnalysis = gtk.TreeStore(str, str)
+        self.tsAnalysis = gtk.TreeStore(int, str)
         #attach model to tvAnalysis
         self.tvAnalysis.set_model(self.tsAnalysis)
         #set selection mode
@@ -236,8 +236,17 @@ class ODScanGUI:
 
     def PopulateTree(self, odfreader):
         for item in odfreader.totalList:
-            self.tsAnalysis.append(None, item)
-            pass
+            # get the root node of the tree
+            node = self.tsAnalysis.get_iter_root()
+            # see if item[0] is at this node - if so append here with node as parent
+            while node != None:
+                if item[0] == self.tsAnalysis.get_value(node, 0):
+                    break
+                else:
+                    # go to next node
+                    node = self.tsAnalysis.iter_next(node)
+            # if None == iter, append wi
+            self.tsAnalysis.append(node, item)
 
 class OdtAnalyzer:
     def __init__(self, filename, ignoreWords=None):
@@ -301,7 +310,7 @@ class OdtAnalyzer:
                     self.wordCounter[word] = 1
         #remove words from the ignore list
         #                            function                            iterable
-        self.totalList = sorted( map(lambda x: [x, self.wordCounter[x]], self.PareDown()),
+        self.totalList = sorted( map(lambda x: [self.wordCounter[x], x], self.PareDown()),
                 key=operator.itemgetter(1), reverse=True)
 
     def PareDown(self):
