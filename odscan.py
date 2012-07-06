@@ -17,6 +17,8 @@ import gtk.glade;
 
 gtk.gdk.threads_init();
 
+VERSION = 2.0
+
 #TODO list:
 #1. X Put treeviews into their own class to clean up __init__()
 #2.   Don't split words on whitespace; find a better way to do it that won't
@@ -27,10 +29,8 @@ gtk.gdk.threads_init();
 #5. X Fix Inotify support; the threaded listner doesn't work.  Made a test file
 #     called pythino.py; use that to figure this out.  pyinotest.py works pretty
 #     well...
-#6.   Find out why the delete_event doesn't work the same way as the quit menu item
+#6. X Find out why the delete_event doesn't work the same way as the quit menu item
 
-
-print sys.argv[0]
 gladefile = '%s%sodscan.glade' % (os.path.dirname(sys.argv[0]), os.path.sep)
 logging.basicConfig(level=logging.DEBUG,
         datefmt='%H:%M:%S',
@@ -137,9 +137,9 @@ class ODScanGUI:
     def UnInotify(self, caller=None):
         """stops monitoring the current file for changes"""
         if self.notifier != None:
-            print "%s needs to stop a notifier on %s" % (caller, self.filename)
+            logging.debug("%s needs to stop a notifier on %s" % (caller, self.filename))
             self.notifier.stop()
-            print "...Done stopping notifier"
+            logging.debug("...Done stopping notifier")
             self.notifier = None
             return False
 
@@ -273,8 +273,7 @@ class OdtAnalyzer:
     def ShowManifest(self):
         """ show which files exist in the ODF document """
         for s in self.filelist:
-            #print s.orig_filename, s.date_time, s.filename, s.file_size, s.compress_size
-            print s.orig_filename
+            logging.info(s.orig_filename, s.date_time, s.filename, s.file_size, s.compress_size)
 
     def GetContents(self):
         """ read the paragraphs from the content.xml file """
@@ -311,7 +310,7 @@ class OdtAnalyzer:
         #remove words from the ignore list
         #                            function                            iterable
         self.totalList = sorted( map(lambda x: [self.wordCounter[x], x], self.PareDown()),
-                key=operator.itemgetter(1), reverse=True)
+                key=operator.itemgetter(0), reverse=True)
 
     def PareDown(self):
         """copies self.wordCounter and removes items from it"""
@@ -385,7 +384,7 @@ class IgnoreWords:
             #write out this limited list if the file is not present.
             self.writeFile()
         except:
-            print "Unknown error:", sys.exc_info()[0]
+            logging.error("Unknown error:", sys.exc_info()[0])
         else:
             b.close()
 
@@ -402,7 +401,7 @@ class IgnoreWords:
         try:
             self.words.remove(word.strip().lower()) 
         except ValueError:
-            print "Failed to remove %s from Ignored words list" % word
+            logging.error("Failed to remove %s from Ignored words list" % word)
         else:
             self.writeFile()
 
@@ -416,19 +415,13 @@ class InoEventProc(ProcessEvent):
         self.tree = tree
 
     def process_IN_ACCESS(self, event):
-        print "file was accessed..."
-        print event.event_name
-        print event.name
-        print event.path
+        logging.info("file %s was accessed; event = %s" % (event.name, event.path))
 
     def process_IN_IGNORED(self, event):
-        print "file was ignored"
-        print event.event_name
-        print event.name
-        print event.path
+        logging.info("file %s was ignored; event = %s" % (event.name, event.path))
 
     def process_IN_CLOSE_WRITE(self, event):
-        print "file %s did a %s" % (event.name, event.path)
+        logging.info("file %s did a %s" % (event.path, event.name))
         gobject.idle_add(self.tree.Rescan, 'inotify')
 
 if __name__ == '__main__':
