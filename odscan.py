@@ -419,7 +419,7 @@ class InoEventProc(ProcessEvent):
         print event.path
 
     def process_IN_CLOSE_WRITE(self, event):
-        print "file %s did a %s" % (event.event_name, event.path)
+        print "file %s did a %s" % (event.name, event.path)
         gobject.idle_add(self.tree.Rescan, 'inotify')
 
 if __name__ == '__main__':
